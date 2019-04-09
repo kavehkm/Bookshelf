@@ -7,6 +7,7 @@ class Order(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     email = models.EmailField()
+    tell = models.CharField(max_length=20)
     address = models.CharField(max_length=255)
     province = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
@@ -19,7 +20,7 @@ class Order(models.Model):
         return sum(item.get_cost() for item in self.items.all())
 
     def __str__(self):
-        return self.id
+        return "%d" % self.id
 
 
 
