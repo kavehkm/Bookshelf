@@ -8,7 +8,6 @@ def book_list(request, category_slug=None):
     category = None
     categories = Category.objects.all()
     books = Book.objects.filter(available=True).order_by('-created')
-    books_count = books.count()
     if category_slug:
         category = get_object_or_404(Category, slug=category_slug)
         books = books.filter(category=category)
@@ -16,7 +15,6 @@ def book_list(request, category_slug=None):
         'category': category,
         'categories': categories,
         'books': books,
-        'books_count': books_count
     }
     return render(request, 'shop/book_list.html', context)
 
