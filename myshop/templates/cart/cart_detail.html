@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Cart Detail
+{% endblock %}
+
+{% block main %}
+<div class="col-lg-12 py-4">
+    <div class="row">
+        <div class="col-lg-12">
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Cover</th>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Stock</th>
+                        <th>Unit Price</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Remove</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>
+                            <div
+                                class="bookimage-sm shadow-sm"
+                                style="background-image: url('{% if item.book.image %}{{ item.book.image.url }}{% else %}/static/img/no-image.png/{% endif %}');">
+                            </div>
+                        </td>
+                        <td>{{ item.book.title | title }}</td>
+                        <td>{{ item.book.category.name | title }}</td>
+                        <td>{{ item.book.stock }}</td>
+                        <td>{{ item.price }}</td>
+                        <td>{{ item.total_price }}</td>
+                        <td>
+                            <form action="{% url 'cart_add' item.book.id %}" method="POST">
+                                {% csrf_token %}
+                                {{ item.update_quantity_form.update }}
+                                {{ item.update_quantity_form.quantity }}
+                                <button type="submit" class="btn btn-secondary btn-sm">Update</button>
+                            </form>
+                        </td>
+                        <td>
+                            <a href="{% url 'cart_remove' item.book.id %}" class="btn btn-danger btn-sm">Remove</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-lg-12">
+            <a href="{% url 'book_list' %}" class="btn btn-primary mr-2">
+                <i class="fas fa-arrow-left"></i>
+                <b>Continue Shoping</b>
+            </a>
+            <a href="" class="btn btn-success">
+                <i class="fas fa-check"></i>
+                <b>Checkout</b>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
