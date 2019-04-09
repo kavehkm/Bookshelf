@@ -34,7 +34,7 @@ class Cart(object):
         self.save()
     
 
-    def remove(book):
+    def remove(self, book):
         """
         remove a book from cart.
         """
