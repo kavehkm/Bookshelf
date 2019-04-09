@@ -1,0 +1,72 @@
+<!-- load staticfiles -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- block title : start -->
+    <title>{% block title %}base{% endblock %}</title>
+    <!-- block title : end -->
+<!-- block style : start -->
+{% block style %}
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/bootstrap-css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+{% endblock %}
+<!-- block style : end -->
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="col-lg-12 m-0 p-0">
+        {% block container %}
+            <div class="row header border py-5">
+                header and logo is here.
+            </div>
+            <!-- cart : start -->
+            <div class="row cart border py-2">
+                <div class="col-lg-12 text-right">
+                    <a href="{% url 'cart_detail' %}" class="btn btn-dark btn-lg">
+                        <i class="fas fa-shopping-cart"></i>
+                        {% if cart|length %}
+                        {{ cart|length }} items,
+                        <i class="fas fa-dollar-sign"></i>
+                        {{ cart.get_total_price }}
+                        {% else %}
+                        <b>your cart is empty</b>
+                        {% endif %}
+                    </a>
+                </div>
+            </div>
+            <!-- cart : end -->
+            <!-- messages : start -->
+            {% if messages %}
+            <div class="row messages">
+                {% include 'messages.html' %}
+            </div>
+            {% endif %}
+            <!-- messages : end -->
+            <div class="row main">
+            <!-- block main : start -->
+            {% block main %}
+            {% endblock %}
+            <!-- block main : end -->
+            </div>
+            <!-- footer : start -->
+            <div class="row footer border py-5">
+                footer is here.
+            </div>
+            <!-- footer : end -->
+        {% endblock %}
+        </div>
+    </div>
+<!-- block js : start -->
+{% block js %}
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+{% endblock %}
+<!-- block js : end -->
+</body>
+</html>
