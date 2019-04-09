@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+<!-- load django widget tweaks tags -->
+{% load widget_tweaks %}
+
+{% block title %}
+Place Order
+{% endblock %}
+
+{% block main %}
+<div class="col-lg-5 py-4 pl-lg-5">
+    <form action="{% url 'create_order' %}" method="POST" novalidate>
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="form-group col-lg-6">
+                <label for="{{ form.first_name.id_for_label }}"><b>{{ form.first_name.label }}</b></label>
+                {% render_field form.first_name class="form-control" %}
+                {% for error in form.first_name.errors %}
+                <p class="text-danger font-italic font-weight-bold small p-1 m-0">{{ error }}</p>
+                {% endfor %}
+            </div>
+            <div class="form-group col-lg-6">
+                <label for="{{ form.last_name.id_for_label }}"><b>{{ form.last_name.label }}</b></label>
+                {% render_field form.last_name class="form-control" %}
+                {% for error in form.last_name.errors %}
+                <p class="text-danger font-italic small font-weight-bold p-1 m-0">{{ error }}</p>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-lg-7">
+                <label for="{{ form.email.id_for_label }}"><b>{{ form.email.label }}</b></label>
+                {% render_field form.email class="form-control" %}
+                {% for error in form.email.errors %}
+                <p class="text-danger font-italic small font-weight-bold p-1 m-0">{{ error }}</p>
+                {% endfor %}
+            </div>
+            <div class="form-group col-lg-5">
+                <label for="{{ form.tell.id_for_label }}"><b>{{ form.tell.label }}</b></label>
+                {% render_field form.tell class="form-control" %}
+                {% for error in form.tell.errors %}
+                <p class="text-danger font-italic small font-weight-bold p-1 m-0">{{ error }}</p>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-lg-12">
+                <label for="{{ form.address.id_for_label }}"><b>{{ form.address.label }}</b></label>
+                {% render_field form.address class="form-control" %}
+                {% for error in form.address.errors %}
+                <p class="text-danger font-italic small font-weight-bold p-1 m-0">{{ error }}</p>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-lg-6">
+                <label for="{{ form.province.id_for_label }}"><b>{{ form.province.label }}</b></label>
+                {% render_field form.province class="form-control" %}
+                {% for error in form.province.errors %}
+                <p class="text-danger font-italic small font-weight-bold p-1 m-0">{{ error }}</p>
+                {% endfor %}
+            </div>
+            <div class="form-group col-lg-6">
+                <label for="{{ form.city.id_for_label }}"><b>{{ form.city.label }}</b></label>
+                {% render_field form.city class="form-control" %}
+                {% for error in form.city.errors %}
+                <p class="text-danger font-italic small font-weight-bold p-1 m-0">{{ error }}</p>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-lg-12">
+                <label for="{{ form.additional_info.id_for_label }}"><b>{{ form.additional_info.label }}</b></label>
+                {% render_field form.additional_info class="form-control" rows=3 %}
+                {% for error in form.additional_info.errors %}
+                <p class="text-danger font-italic small font-weight-bold p-1 m-0">{{ error }}</p>
+                {% endfor %}
+            </div>
+        </div>
+        <button type="submit" class="btn btn-success">
+            <i class="fas fa-clipboard-check"></i>
+            <b>Place Order</b>
+        </button>
+        <a href="{% url 'book_list' %}" class="btn btn-danger ml-2">
+            <i class="fas fa-times"></i>
+            <b>Cancel</b>
+        </a>
+    </form>
+</div>
+<div class="col-lg-5 offset-lg-1 py-4">
+    <h2 class="text-center mb-4">Your order:</h2>
+    <table class="table table-hover create-order-table">
+        <tbody>
+            {% for item in cart %}
+            <tr>
+                <td>{{ item.quantity }} x <b>{{ item.book.title | title }}</b></td>
+                <td>${{ item.total_price }}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td></td>
+                <td>
+                    <span class="book-detail-q">Total Price:</span>
+                    ${{ cart.get_total_price }}
+                </td>
+            </tr>            
+        </tbody>
+    </table>
+</div>
+{% endblock %}
