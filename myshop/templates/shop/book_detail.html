@@ -30,7 +30,7 @@ Book : {{ book.title | title }}
         </div>
         <div class="col-lg-12 mt-2">
             <span class="book-detail-q">Description:</span>
-            <p class="text-justify book-detail-a">{{ book.description }}</p>
+            <p class="book-detail-a">{{ book.description }}</p>
         </div>
         <div class="col-lg-12">
             <form action="{% url 'cart_add' book.id %}" method="POST">
