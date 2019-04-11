@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Books{% if category is not None %} : {{ category.name | title }} {% endif %}
+Books{% if category %} : {{ category.name | title }} {% endif %}
 {% endblock %}
 
 {% block main %}
 <div class="col-lg-3 categories border py-4">
     <div class="list-group list-group-flush">
-        <a href="{% url 'book_list' %}" class="list-group-item list-group-item-action {% if category.name is None %}active{% endif %}"><b>All</b></a>
+        <a href="{% url 'book_list' %}" class="list-group-item list-group-item-action {% if not category.name %}active{% endif %}"><b>All</b></a>
         {% for category2 in categories %}
         <a href="{% url 'books_by_category' category2.slug %}" class="list-group-item list-group-item-action {% if category2.name == category.name %}active{% endif %}"><b>{{ category2.name | title }}</b></a>
         {% endfor %}
@@ -18,7 +18,7 @@ Books{% if category is not None %} : {{ category.name | title }} {% endif %}
     <a href="{% url 'book_detail' book.id book.slug %}" title="{{ book.title | title }}">
         <div
             class="bookimage-md shadow"
-            style="background-image: url('{% if book.image %}{{ book.image.url }}{% else %}/static/img/no-image.png/{% endif %}');">
+            style="background-image: url('{% if book.image %}/media/{{ book.image }}{% else %}/static/img/no-image.png/{% endif %}');">
         </div>
     </a>
     {% empty %}

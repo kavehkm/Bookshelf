@@ -4,19 +4,27 @@ from cart.forms import CartAddBookForm
 
 
 
-def book_list(request, category_slug=None):
-    category = None
-    categories = Category.objects.all()
-    books = Book.objects.filter(available=True).order_by('-created')
-    if category_slug:
-        category = get_object_or_404(Category, slug=category_slug)
-        books = books.filter(category=category)
+def book_list(request):
+    categories = Category.objects.all().values('name', 'slug')
+    books = Book.objects.filter(available=True).values('id', 'title', 'slug', 'image').order_by('-created')
+    context = {
+        'categories': categories,
+        'books': books
+    }
+    return render(request, 'shop/book_list.html', context)
+
+
+def books_by_category(request, category_slug):
+    category = get_object_or_404(Category, slug=category_slug)
+    categories = Category.objects.all().values('name', 'slug')
+    books = Book.objects.filter(category=category).values('id', 'title', 'slug', 'image')
     context = {
         'category': category,
         'categories': categories,
-        'books': books,
+        'books': books
     }
     return render(request, 'shop/book_list.html', context)
+
 
 
 def book_detail(request, book_id, book_slug):
