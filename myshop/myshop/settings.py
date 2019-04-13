@@ -1,14 +1,14 @@
 import os
+import json
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
+with open(os.path.join(BASE_DIR, '.secret.json')) as f:
+    secrets = json.loads(f.read())
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'gwbz$u$so9smoq1ip47jygj^^$qe7wp%i1p!8v4)#*y@n@^-r0'
+SECRET_KEY = secrets.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -127,4 +127,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # cart session id
 
-CART_SESSION_ID = 'cart'
+CART_SESSION_ID = secrets.get("CART_SESSION_ID")
