@@ -108,3 +108,6 @@ media/
 
 # vscode configurations
 .vscode/
+
+# secret information file
+.secret.json
