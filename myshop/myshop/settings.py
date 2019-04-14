@@ -1,14 +1,24 @@
 import os
 import json
+from django.core.exceptions import ImproperlyConfigured
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# Read json-file that contain secret informations
 with open(os.path.join(BASE_DIR, '.secret.json')) as f:
     secrets = json.loads(f.read())
 
+# get secret information
+def get_secret_setting(setting, secrets=secrets):
+    try:
+        return secrets[setting]
+    except KeyError:
+        raise ImproperlyConfigured("Set the {} setting".format(setting))
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = secrets.get("SECRET_KEY")
+SECRET_KEY = get_secret_setting('secret_key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -70,8 +80,12 @@ WSGI_APPLICATION = 'myshop.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': get_secret_setting('db_name'),
+        'USER': get_secret_setting('username'),
+        'PASSWORD': get_secret_setting('password'),
+        'HOST': get_secret_setting('host'),
+        'PORT': get_secret_setting('port'),
     }
 }
 
@@ -127,4 +141,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # cart session id
 
-CART_SESSION_ID = secrets.get("CART_SESSION_ID")
+CART_SESSION_ID = get_secret_setting('cart_session_id')
